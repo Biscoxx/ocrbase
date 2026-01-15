@@ -1,0 +1,24 @@
+{
+  "name": "@ocrbase/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@ocrbase/db": "workspace:*",
+    "@ocrbase/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@ocrbase/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
