@@ -14,11 +14,11 @@ Turn PDFs into structured data at scale. Powered by frontier open-weight OCR mod
 ## Quick Start
 
 ```bash
-bun add @ocrbase/sdk
+bun add ocrbase
 ```
 
 ```typescript
-import { createOCRBaseClient } from "@ocrbase/sdk";
+import { createOCRBaseClient } from "ocrbase";
 
 const client = createOCRBaseClient({ baseUrl: "https://your-instance.com" });
 
@@ -35,7 +35,7 @@ See [SDK documentation](./packages/sdk/README.md) for React hooks and advanced u
 
 See [Self-Hosting Guide](./docs/SELF_HOSTING.md) for deployment instructions.
 
-**Requirements:** Docker, Bun, CUDA GPU with 12GB+ VRAM
+**Requirements:** Docker, Bun
 
 ## Architecture
 

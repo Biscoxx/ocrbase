@@ -6,7 +6,32 @@ Complete guide for deploying OCRBase on your own infrastructure.
 
 - [Bun](https://bun.sh/) installed globally
 - Docker Desktop running
-- **GPU**: PaddleOCR-VL-0.9B requires a CUDA-capable GPU with at least 12GB VRAM (tested on RTX 3060 12GB)
+
+## PaddleOCR-VL Setup
+
+OCRBase requires a running PaddleOCR-VL service. You can either use a hosted service or self-host it.
+
+### Option 1: Self-Host with Docker Compose (Recommended)
+
+**Requirements:** NVIDIA GPU with CUDA 12.6+, Docker 19.03+
+
+1. Download the deployment files from [PaddleOCR GitHub](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/paddleocr_vl_docker/accelerators/gpu/):
+   - `compose.yaml`
+   - `.env`
+
+2. Start the service:
+
+   ```bash
+   docker compose up
+   ```
+
+3. Wait for "Application startup complete" - the service will be available at `http://localhost:8080`
+
+For detailed configuration options, see the [official PaddleOCR-VL documentation](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PaddleOCR-VL.html#41-method-1-deploy-using-docker-compose-recommended).
+
+### Option 2: Use a Hosted Service
+
+Set the `PADDLE_OCR_URL` environment variable to point to your hosted PaddleOCR instance.
 
 ## Quick Start
 
