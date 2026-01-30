@@ -15,6 +15,17 @@ interface ProcessExtractionOptions {
   hints?: string;
 }
 
+export interface LlmUsage {
+  promptTokens: number;
+  completionTokens: number;
+}
+
+interface ExtractionResult {
+  data: Record<string, unknown>;
+  usage: LlmUsage;
+  model: string;
+}
+
 interface GenerateSchemaOptions {
   markdown: string;
   hints?: string;
@@ -100,7 +111,7 @@ Do not include any markdown formatting or explanation. Just the JSON object.`;
     markdown,
     schema,
     hints,
-  }: ProcessExtractionOptions): Promise<Record<string, unknown>> {
+  }: ProcessExtractionOptions): Promise<ExtractionResult> {
     if (!env.OPENROUTER_API_KEY) {
       throw new Error("OPENROUTER_API_KEY is not configured");
     }
@@ -122,6 +133,13 @@ Do not include any markdown formatting or explanation. Just the JSON object.`;
       system: systemPrompt,
     });
 
-    return extractJsonFromResponse<Record<string, unknown>>(result.text);
+    return {
+      data: extractJsonFromResponse<Record<string, unknown>>(result.text),
+      model: DEFAULT_MODEL,
+      usage: {
+        completionTokens: result.usage.outputTokens ?? 0,
+        promptTokens: result.usage.inputTokens ?? 0,
+      },
+    };
   },
 };

@@ -42,12 +42,25 @@ export const formatJobResponse = (job: Job): JobResponse => ({
 export const getErrorMessage = (caught: unknown, fallback: string): string =>
   caught instanceof Error ? caught.message : fallback;
 
+const setWideEventJob = (
+  wideEvent: WideEventContext | undefined,
+  job: Job
+): void => {
+  wideEvent?.setJob({
+    fileSize: job.fileSize,
+    id: job.id,
+    mimeType: job.mimeType,
+    type: job.type,
+  });
+};
+
 interface CreateJobHandlerOptions {
   type: "parse" | "extract";
 }
 
 export const createJobHandler = async <
   T extends {
+    apiKey?: { id: string } | null;
     body: {
       file?: File;
       hints?: string;
@@ -63,7 +76,7 @@ export const createJobHandler = async <
   wideEvent: WideEventContext | undefined,
   options: CreateJobHandlerOptions
 ): Promise<JobResponse | { message: string }> => {
-  const { body, organization, set, user } = ctx;
+  const { apiKey, body, organization, set, user } = ctx;
 
   if (!user || !organization) {
     set.status = 401;
@@ -80,6 +93,7 @@ export const createJobHandler = async <
 
     if (hasValidUrl && body.url) {
       const job = await JobService.createFromUrl({
+        apiKeyId: apiKey?.id,
         body: {
           hints: body.hints,
           schemaId: body.schemaId,
@@ -90,13 +104,7 @@ export const createJobHandler = async <
         userId: user.id,
       });
 
-      wideEvent?.setJob({
-        fileSize: job.fileSize,
-        id: job.id,
-        mimeType: job.mimeType,
-        type: job.type,
-      });
-
+      setWideEventJob(wideEvent, job);
       return formatJobResponse(job);
     }
 
@@ -109,6 +117,7 @@ export const createJobHandler = async <
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const job = await JobService.create({
+      apiKeyId: apiKey?.id,
       body: {
         hints: body.hints,
         schemaId: body.schemaId,
@@ -124,13 +133,7 @@ export const createJobHandler = async <
       userId: user.id,
     });
 
-    wideEvent?.setJob({
-      fileSize: job.fileSize,
-      id: job.id,
-      mimeType: job.mimeType,
-      type: job.type,
-    });
-
+    setWideEventJob(wideEvent, job);
     return formatJobResponse(job);
   } catch (error) {
     set.status = 500;

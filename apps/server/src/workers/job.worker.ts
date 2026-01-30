@@ -23,19 +23,25 @@ const runExtraction = async (
 ): Promise<void> => {
   await updateJobStatus(jobId, "extracting");
 
-  const jsonResult = await llmService.processExtraction({
+  const extractionResult = await llmService.processExtraction({
     hints: hints ?? undefined,
     markdown,
     schema,
   });
 
   const processingTimeMs = Date.now() - startTime;
+  const tokenCount =
+    extractionResult.usage.promptTokens +
+    extractionResult.usage.completionTokens;
 
   await completeJob(jobId, {
-    jsonResult,
+    jsonResult: extractionResult.data,
+    llmModel: extractionResult.model,
+    llmUsage: extractionResult.usage,
     markdownResult: markdown,
     pageCount,
     processingTimeMs,
+    tokenCount,
   });
 };
 

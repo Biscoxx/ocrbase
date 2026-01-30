@@ -13,6 +13,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
 
 interface CreateJobInput {
+  apiKeyId?: string;
   body: CreateJobBody;
   file: {
     buffer: Buffer;
@@ -25,6 +26,7 @@ interface CreateJobInput {
 }
 
 interface CreateJobFromUrlInput {
+  apiKeyId?: string;
   body: CreateJobBody & { url: string };
   organizationId: string;
   userId: string;
@@ -36,11 +38,12 @@ interface ListJobsResult {
 }
 
 const create = async (input: CreateJobInput): Promise<Job> => {
-  const { body, file, organizationId, userId } = input;
+  const { apiKeyId, body, file, organizationId, userId } = input;
 
   const [newJob] = await db
     .insert(jobs)
     .values({
+      apiKeyId,
       fileKey: "",
       fileName: file.name,
       fileSize: file.size,
@@ -92,13 +95,14 @@ const extractFilenameFromUrl = (url: string): string => {
 };
 
 const createFromUrl = async (input: CreateJobFromUrlInput): Promise<Job> => {
-  const { body, organizationId, userId } = input;
+  const { apiKeyId, body, organizationId, userId } = input;
 
   const fileName = extractFilenameFromUrl(body.url);
 
   const [newJob] = await db
     .insert(jobs)
     .values({
+      apiKeyId,
       fileKey: null,
       fileName,
       fileSize: 0,

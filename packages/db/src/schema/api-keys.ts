@@ -1,11 +1,14 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  date,
   index,
   integer,
   pgTable,
+  primaryKey,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 
 import { createId } from "../lib/ids";
@@ -59,8 +62,51 @@ export const apiKeyUsage = pgTable(
   ]
 );
 
+export const usageEvents = pgTable(
+  "usage_events",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId("usageEvent")),
+    apiKeyId: text("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    jobId: text("job_id").notNull(),
+    pages: integer("pages").notNull().default(0),
+    promptTokens: integer("prompt_tokens").notNull().default(0),
+    completionTokens: integer("completion_tokens").notNull().default(0),
+    model: text("model"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    unique("usage_events_job_id_unique").on(table.jobId),
+    index("usage_events_api_key_id_idx").on(table.apiKeyId),
+    index("usage_events_created_at_idx").on(table.createdAt),
+  ]
+);
+
+export const apiKeyUsageDaily = pgTable(
+  "api_key_usage_daily",
+  {
+    apiKeyId: text("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    day: date("day").notNull(),
+    pages: integer("pages").notNull().default(0),
+    jobsCount: integer("jobs_count").notNull().default(0),
+    promptTokens: integer("prompt_tokens").notNull().default(0),
+    completionTokens: integer("completion_tokens").notNull().default(0),
+  },
+  (table) => [
+    primaryKey({ columns: [table.apiKeyId, table.day] }),
+    index("api_key_usage_daily_api_key_id_idx").on(table.apiKeyId),
+  ]
+);
+
 export const apiKeysRelations = relations(apiKeys, ({ many }) => ({
   usage: many(apiKeyUsage),
+  usageEvents: many(usageEvents),
+  usageDaily: many(apiKeyUsageDaily),
 }));
 
 export const apiKeyUsageRelations = relations(apiKeyUsage, ({ one }) => ({
@@ -70,7 +116,28 @@ export const apiKeyUsageRelations = relations(apiKeyUsage, ({ one }) => ({
   }),
 }));
 
+export const usageEventsRelations = relations(usageEvents, ({ one }) => ({
+  apiKey: one(apiKeys, {
+    fields: [usageEvents.apiKeyId],
+    references: [apiKeys.id],
+  }),
+}));
+
+export const apiKeyUsageDailyRelations = relations(
+  apiKeyUsageDaily,
+  ({ one }) => ({
+    apiKey: one(apiKeys, {
+      fields: [apiKeyUsageDaily.apiKeyId],
+      references: [apiKeys.id],
+    }),
+  })
+);
+
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type NewApiKey = typeof apiKeys.$inferInsert;
 export type ApiKeyUsage = typeof apiKeyUsage.$inferSelect;
 export type NewApiKeyUsage = typeof apiKeyUsage.$inferInsert;
+export type UsageEvent = typeof usageEvents.$inferSelect;
+export type NewUsageEvent = typeof usageEvents.$inferInsert;
+export type ApiKeyUsageDaily = typeof apiKeyUsageDaily.$inferSelect;
+export type NewApiKeyUsageDaily = typeof apiKeyUsageDaily.$inferInsert;

@@ -10,6 +10,7 @@ export const ID_PREFIXES = {
   job: "job",
   organization: "org",
   schema: "sch",
+  usageEvent: "ue",
 } as const;
 
 type IdPrefix = keyof typeof ID_PREFIXES;
