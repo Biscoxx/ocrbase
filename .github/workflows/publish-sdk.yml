@@ -34,7 +34,7 @@ jobs:
       - name: Update SDK version
         run: |
           cd packages/sdk
-          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
 
       - name: Build SDK
         run: bun run --filter @ocrbase/sdk build
