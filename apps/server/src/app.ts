@@ -81,10 +81,9 @@ export const app = new Elysia()
   .use(wideEventPlugin)
   .use(rateLimitPlugin)
   .use(errorHandlerPlugin)
+  .mount(auth.handler)
+  // OpenAPI documentation for auth endpoints (mount handles actual requests)
   .use(authRoutes)
-  .all("/api/auth/*", (context) => auth.handler(context.request), {
-    detail: { hide: true },
-  })
   .use(healthRoutes)
   .use(parseRoutes)
   .use(extractRoutes)
